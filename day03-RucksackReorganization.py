@@ -15,6 +15,14 @@ def main():
                 break
     print(total_priority)
 
+    total_priority = 0
+    for i in range(0, len(lines), 3):
+        for c in lines[i].strip():
+            if c in lines[i + 1] and c in lines[i + 2]:
+                total_priority += ord(c) - ((97 - 1) if c.islower() else (65 - 27))
+                break
+    print(total_priority)
+
 
 if __name__ == '__main__':
     main()
