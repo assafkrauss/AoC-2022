@@ -3,6 +3,7 @@ def main():
     lines = f.readlines()
 
     containing_pairs_count = 0
+    overlapping_pairs_count = 0
     for line in lines:
         [elf1, elf2] = line.split(',')
         [elf1_from, elf1_to] = map(lambda x: int(x), elf1.split('-'))
@@ -10,7 +11,16 @@ def main():
         if elf1_from >= elf2_from and elf1_to <= elf2_to or \
            elf2_from >= elf1_from and elf2_to <= elf1_to:
             containing_pairs_count += 1
+        if elf1_from == elf2_from:
+            overlapping_pairs_count += 1
+        elif elf1_from < elf2_from:
+            if elf2_from <= elf1_to:
+                overlapping_pairs_count += 1
+        else:  # elf2_from < elf1_from
+            if elf1_from <= elf2_to:
+                overlapping_pairs_count += 1
     print(containing_pairs_count)
+    print(overlapping_pairs_count)
 
 
 if __name__ == '__main__':
