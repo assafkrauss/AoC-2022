@@ -67,14 +67,23 @@ def main():
     root = parse_input_into_folder_tree(lines)
     sum_of_most_100000 = 0
     folders_queue = [root]
+    all_size = []
     while len(folders_queue) > 0:
         folder = folders_queue.pop()
         folder_size = folder.size()
+        all_size.append(folder_size)
         if folder_size <= 100000:
             sum_of_most_100000 += folder_size
         for f in folder.get_folders():
             folders_queue.append(f)
     print(sum_of_most_100000)
+
+    to_free = root.size() - (70000000 - 30000000)
+    all_size.sort()
+    for size in all_size:
+        if size > to_free:
+            print(size)
+            break
 
 
 if __name__ == '__main__':
