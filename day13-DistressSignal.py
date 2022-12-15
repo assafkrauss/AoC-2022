@@ -1,4 +1,5 @@
 import ast
+from functools import cmp_to_key
 
 
 # return <0 if p1 < p2
@@ -35,6 +36,16 @@ def main():
         if compare_packet(p1, p2) < 0:
             indices_sum += (i // 3) + 1
     print(indices_sum)
+
+    all_packets = []
+    for line in lines:
+        if line.strip() == "":
+            continue
+        all_packets.append(ast.literal_eval(line.strip()))
+    all_packets.append([[2]])
+    all_packets.append([[6]])
+    all_packets = sorted(all_packets, key=cmp_to_key(compare_packet))
+    print((1 + all_packets.index([[2]])) * (1 + all_packets.index([[6]])))
 
 
 if __name__ == '__main__':
