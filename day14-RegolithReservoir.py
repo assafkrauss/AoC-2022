@@ -1,3 +1,29 @@
+def sand_drops(rock_points):
+    rock_bottom = max([r[1] for r in rock_points]) + 1
+    solid_rock_points = len(rock_points)
+
+    while True:
+        sand_point = (500, 0)
+        while sand_point not in rock_points:
+            if sand_point[1] > rock_bottom:
+                break
+            if (sand_point[0], sand_point[1] + 1) not in rock_points:
+                sand_point = (sand_point[0], sand_point[1] + 1)
+                continue
+            if (sand_point[0] - 1, sand_point[1] + 1) not in rock_points:
+                sand_point = (sand_point[0] - 1, sand_point[1] + 1)
+                continue
+            if (sand_point[0] + 1, sand_point[1] + 1) not in rock_points:
+                sand_point = (sand_point[0] + 1, sand_point[1] + 1)
+                continue
+            rock_points.add(sand_point)
+            break
+        if sand_point[1] > rock_bottom or (500, 0) in rock_points:
+            break
+
+    return len(rock_points) - solid_rock_points
+
+
 def main():
     f = open("day14.txt")
     lines = f.readlines()
@@ -16,30 +42,13 @@ def main():
                 for y in range(min_y, max_y + 1):
                     rock_points.add((x, y))
 
-    rock_bottom = max([r[1] for r in rock_points]) + 1
-    solid_rock_points = len(rock_points)
+    rock_points_copy = rock_points.copy()
+    print(sand_drops(rock_points_copy))
 
-    while True:
-        sand_point = (500, 0)
-        if sand_point in rock_points:
-            raise Exception("sand is all clogged up")
-        while True:
-            if sand_point[1] >= rock_bottom:
-                break
-            if (sand_point[0], sand_point[1] + 1) not in rock_points:
-                sand_point = (sand_point[0], sand_point[1] + 1)
-                continue
-            if (sand_point[0] - 1, sand_point[1] + 1) not in rock_points:
-                sand_point = (sand_point[0] - 1, sand_point[1] + 1)
-                continue
-            if (sand_point[0] + 1, sand_point[1] + 1) not in rock_points:
-                sand_point = (sand_point[0] + 1, sand_point[1] + 1)
-                continue
-            rock_points.add(sand_point)
-            break
-        if sand_point[1] >= rock_bottom:
-            break
-    print(len(rock_points) - solid_rock_points)
+    rock_bottom = max([r[1] for r in rock_points]) + 2
+    for x in range(500 - rock_bottom, 500 + rock_bottom + 1):
+        rock_points.add((x, rock_bottom))
+    print(sand_drops(rock_points))
 
 
 if __name__ == '__main__':
